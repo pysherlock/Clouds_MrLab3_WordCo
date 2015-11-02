@@ -3,10 +3,10 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 /*
  * Very simple (and scholastic) implementation of a Writable associative array for String to Int 
@@ -14,9 +14,9 @@ import org.apache.hadoop.io.Writable;
  **/
 public class StringToIntMapWritable implements Writable {
 
-  private Map<String, Integer> map;
+  private HashMap<String, Integer> map;
 
-  public StringToIntMapWritable () {
+  public StringToIntMapWritable() {
     map = new HashMap<>();
   }
 
@@ -28,7 +28,7 @@ public class StringToIntMapWritable implements Writable {
     map.clear();
   }
 
-  public Map<String, Integer> getMap() {
+  public HashMap<String, Integer> getMap() {
     return map;
   }
 
@@ -45,15 +45,30 @@ public class StringToIntMapWritable implements Writable {
     }
     //if(map.stripe.getMap())
   }
-
-
   // TODO: add an internal field that is the real associative array
+
+  public String toString() {
+    String stripe = new String(" : ");
+    if (map.entrySet().isEmpty())
+      stripe = stripe.concat("Empty");
+    for(Map.Entry<String, Integer> entry: this.map.entrySet()) {
+      stripe = stripe.concat(entry.getKey() + " : " + entry.getValue());
+    }
+    return stripe;
+  }
 
   @Override
   public void readFields(DataInput in) throws IOException {
 
+    Text text;
+    IntWritable num;
+    for(Map.Entry<String, Integer> entry : this.map.entrySet()) {
+      text = new Text(entry.getKey());
+      num = new IntWritable(entry.getValue());
+      text.readFields(in);
+      num.readFields(in);
+    }
     // TODO: implement deserialization
-
     // Warning: for efficiency reasons, Hadoop attempts to re-use old instances of
     // StringToIntMapWritable when reading new records. Remember to initialize your variables 
     // inside this function, in order to get rid of old data.
@@ -62,7 +77,14 @@ public class StringToIntMapWritable implements Writable {
 
   @Override
   public void write(DataOutput out) throws IOException {
-
+    Text text;
+    IntWritable num;
+    for(Map.Entry<String, Integer> entry : map.entrySet()) {
+      text = new Text(entry.getKey());
+      num = new IntWritable(entry.getValue());
+      text.write(out);
+      num.write(out);
+    }
     // TODO: implement serialization
   }
 }

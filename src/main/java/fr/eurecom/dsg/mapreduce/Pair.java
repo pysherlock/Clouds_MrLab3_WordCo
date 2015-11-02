@@ -24,28 +24,35 @@ import org.apache.hadoop.util.ToolRunner;
 public class Pair extends Configured implements Tool {
 
   public static class PairMapper 
-   extends Mapper<IntWritable, Text, TextPair, IntWritable> { // TODO: change Object to output value type
+   extends Mapper<LongWritable, Text, TextPair, IntWritable> {
 
       private static IntWritable ONE = new IntWritable(1);
       private static TextPair textPair = new TextPair();
+      private int window = 10;
 
       @Override
-      protected void map(IntWritable key, Text value, Context context)
+      protected void map(LongWritable key, Text value, Context context)
               throws IOException, InterruptedException {
+          System.out.println("Map here\n");
           String line = value.toString();
           String[] words = line.split("\\s+"); //split string to tokens
           for(int i = 0; i < words.length; i++) {
-              for(int j = 0; j < words.length; j++) {
-                  if(words[i].compareTo(words[j]) != 0) {
+              if (words.length == 0)
+                  continue;
+              for(int j = i - window; j < i + window + 1; j++) {
+                  if(i == j || j < 0)
+                      continue;
+                  else if(j >= words.length)
+                      break;
+                  else if (words[j].length() == 0) //skip empty tokens
+                      break;
+                  else{
                       textPair.set(new Text(words[i]), new Text(words[j]));
                       context.write(textPair, ONE);
                   }
-                  else
-                      context.write(textPair, ONE); //this is not the correct way to deal with this situation, but uptonow i have no idea
               }
           }
       }
-
   }
 
   public static class PairReducer

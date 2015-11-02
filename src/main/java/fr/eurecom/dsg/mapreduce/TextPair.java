@@ -21,8 +21,8 @@ public class TextPair implements WritableComparable<TextPair> {
     private Text second;
 
     public void set(Text first, Text second) {
-        this.first = first;
-        this.second = second;
+        this.first = new Text(first);
+        this.second = new Text(second);
     }
 
     public Text getFirst() {
@@ -82,7 +82,7 @@ public class TextPair implements WritableComparable<TextPair> {
 
     @Override
     public String toString() {
-        return this.first.toString() +' '+ this.first.toString();
+        return this.first.toString() +' '+ this.second.toString();
         // TODO: implement toString for text output format
         // return super.toString();
     }

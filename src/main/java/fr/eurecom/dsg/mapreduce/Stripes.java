@@ -6,6 +6,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -31,12 +32,12 @@ public class Stripes extends Configured implements Tool {
 
       job.setInputFormatClass(TextInputFormat.class);
       job.setMapperClass(StripesMapper.class);
-      job.setMapOutputKeyClass(StringToIntMapWritable.class);
-      job.setMapOutputValueClass(IntWritable.class);
+      job.setMapOutputKeyClass(Text.class);
+      job.setMapOutputValueClass(StringToIntMapWritable.class);
 
       job.setReducerClass(StripesReducer.class);
-      job.setOutputKeyClass(StringToIntMapWritable.class);
-      job.setOutputValueClass(IntWritable.class);
+      job.setOutputKeyClass(Text.class);
+      job.setOutputValueClass(StringToIntMapWritable.class);
 
       job.setOutputFormatClass(TextOutputFormat.class);
 
@@ -46,14 +47,6 @@ public class Stripes extends Configured implements Tool {
 
       job.setJarByClass(Stripes.class);
       return job.waitForCompletion(true) ? 0 : 1;
-    // TODO: set job input format
-    // TODO: set map class and the map output key and value classes
-    // TODO: set reduce class and the reduce output key and value classes
-    // TODO: set job output format
-    // TODO: add the input file as job input (from HDFS) to the variable inputFile
-    // TODO: set the output path for the job results (to HDFS) to the variable outputPath
-    // TODO: set the number of reducers using variable numberReducers
-    // TODO: set the jar class
 
   }
 
@@ -74,19 +67,28 @@ public class Stripes extends Configured implements Tool {
 }
 
 class StripesMapper
-extends Mapper<IntWritable, Text, Text, StringToIntMapWritable> { // TODO: change Object to output value type
+extends Mapper<LongWritable, Text, Text, StringToIntMapWritable> { // TODO: change Object to output value type
 
     private static IntWritable ONE = new IntWritable(1);
     private static StringToIntMapWritable stripe = new StringToIntMapWritable();
+    private int window = 10;
 
     @Override
-    public void map(IntWritable key, Text value, Context context) throws java.io.IOException, InterruptedException {
+    public void map(LongWritable key, Text value, Context context) throws java.io.IOException, InterruptedException {
         String line = value.toString();
         String[] words = line.split("\\s+"); //split string to tokens
 
         for(int i = 0; i < words.length; i++) {
-            for(int j = 0; j < words.length; j++) {
-                if(!(words[i].equals(words[j]))) {
+            if (words.length == 0)
+                continue;
+            for (int j = i - window; j < i + window; j++) {
+                if (i == j || j < 0)
+                    continue;
+                else if (j >= words.length)
+                    break;
+                else if (words[j].length() == 0) //skip empty tokens
+                    break;
+                else {
                     stripe.setStringToIntMapWritable(words[j], 1);
                 }
             }
