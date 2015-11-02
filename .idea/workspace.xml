@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="909c4e98-ac8b-4355-9285-d7dc3a2ec7ce" name="Default" comment="Ex_3_BugwithStripe">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/fr/eurecom/dsg/mapreduce/Pair.java" afterPath="$PROJECT_DIR$/src/main/java/fr/eurecom/dsg/mapreduce/Pair.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/fr/eurecom/dsg/mapreduce/StringToIntMapWritable.java" afterPath="$PROJECT_DIR$/src/main/java/fr/eurecom/dsg/mapreduce/StringToIntMapWritable.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/fr/eurecom/dsg/mapreduce/Stripes.java" afterPath="$PROJECT_DIR$/src/main/java/fr/eurecom/dsg/mapreduce/Stripes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/fr/eurecom/dsg/mapreduce/TextPair.java" afterPath="$PROJECT_DIR$/src/main/java/fr/eurecom/dsg/mapreduce/TextPair.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mr-lab_wordcooccurrence.iml" afterPath="$PROJECT_DIR$/mr-lab_wordcooccurrence.iml" />
+    <list default="true" id="909c4e98-ac8b-4355-9285-d7dc3a2ec7ce" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="mr-lab_wordcooccurrence.iws" />
@@ -36,7 +29,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/fr/eurecom/dsg/mapreduce/Pair.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.33215547">
-              <caret line="26" column="63" selection-start-line="26" selection-start-column="63" selection-end-line="26" selection-end-column="63" />
+              <caret line="26" column="62" selection-start-line="26" selection-start-column="62" selection-end-line="26" selection-end-column="62" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -455,6 +448,13 @@
       <option name="number" value="Default" />
       <updated>1446074497142</updated>
     </task>
+    <task id="LOCAL-00001" summary="Ex_3_BugwithStripe">
+      <created>1446423105308</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1446423105308</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -717,7 +717,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/fr/eurecom/dsg/mapreduce/Pair.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33215547">
-          <caret line="26" column="63" selection-start-line="26" selection-start-column="63" selection-end-line="26" selection-end-column="63" />
+          <caret line="26" column="62" selection-start-line="26" selection-start-column="62" selection-end-line="26" selection-end-column="62" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
