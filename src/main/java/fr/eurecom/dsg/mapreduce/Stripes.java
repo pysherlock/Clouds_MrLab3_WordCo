@@ -79,7 +79,16 @@ extends Mapper<LongWritable, Text, Text, StringToIntMapWritable> { // TODO: chan
         String[] words = line.split("\\s+"); //split string to tokens
 
         for(int i = 0; i < words.length; i++) {
-            if (words.length == 0)
+            for(int j = 0; j < words.length; j++) {
+                if(i == j)
+                    continue;
+                else if (words[j].length() == 0)
+                    continue;
+                else {
+                    stripe.setStringToIntMapWritable(words[j], 1);
+                }
+            }
+        /*    if (words.length == 0)
                 continue;
             for (int j = i - window; j < i + window; j++) {
                 if (i == j || j < 0)
@@ -91,7 +100,7 @@ extends Mapper<LongWritable, Text, Text, StringToIntMapWritable> { // TODO: chan
                 else {
                     stripe.setStringToIntMapWritable(words[j], 1);
                 }
-            }
+            }*/
             context.write(new Text(words[i]), stripe);
             stripe.clean();
         }

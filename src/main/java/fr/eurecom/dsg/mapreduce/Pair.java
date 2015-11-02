@@ -71,7 +71,6 @@ public class Pair extends Configured implements Tool {
           SumValue.set(sum);
           context.write(key, SumValue);
       }
-
     // TODO: implement reducer
   }
 

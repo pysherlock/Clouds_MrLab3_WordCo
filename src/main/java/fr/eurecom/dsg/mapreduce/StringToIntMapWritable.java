@@ -43,7 +43,6 @@ public class StringToIntMapWritable implements Writable {
         map.put(entry.getKey(), entry.getValue());
       }
     }
-    //if(map.stripe.getMap())
   }
   // TODO: add an internal field that is the real associative array
 

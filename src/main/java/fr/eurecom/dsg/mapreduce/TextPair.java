@@ -73,11 +73,10 @@ public class TextPair implements WritableComparable<TextPair> {
 
     @Override
     public int compareTo(TextPair tp) {
-        if(this.first == tp.first && this.second == tp.second)
-            return 1;
-        else if(this.first == tp.second && this.second == tp.first)
-            return 1;
-        return 0;
+        int cmp = first.compareTo(tp.first);
+        if(cmp != 0)
+            return cmp;
+        return second.compareTo(tp.second);
     }
 
     @Override
