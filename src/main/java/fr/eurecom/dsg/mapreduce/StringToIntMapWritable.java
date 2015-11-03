@@ -21,7 +21,12 @@ public class StringToIntMapWritable implements Writable {
   }
 
   public void setStringToIntMapWritable(String word, int index) {
-    map.put(word, index);
+    if(map.containsKey(word)){
+      int value = map.get(word) + index;
+      map.put(word, value);
+    }
+    else
+      map.put(word, index);
   }
 
   public void clean() {
@@ -29,20 +34,20 @@ public class StringToIntMapWritable implements Writable {
   }
 
   public HashMap<String, Integer> getMap() {
-    return map;
+    return this.map;
   }
 
   public void add(StringToIntMapWritable stripe) {
 
+    int i = 0;
     for(Map.Entry<String, Integer> entry : stripe.getMap().entrySet()) { //traverse the new stripe and add each entry the original one
-      if(map.containsKey(entry.getKey())) {
-        int value = map.get(entry.getKey()) + 1;
-        map.put(entry.getKey(), value);
-      }
-      else {
-        map.put(entry.getKey(), entry.getValue());
-      }
+      this.setStringToIntMapWritable(entry.getKey(), entry.getValue());
+      i++;
     }
+    if (i == 0)
+      this.setStringToIntMapWritable("ForNull", 1);
+    if(stripe.getMap().isEmpty())
+      this.setStringToIntMapWritable("stripeEmpty", 1);
   }
   // TODO: add an internal field that is the real associative array
 
@@ -51,14 +56,13 @@ public class StringToIntMapWritable implements Writable {
     if (map.entrySet().isEmpty())
       stripe = stripe.concat("Empty");
     for(Map.Entry<String, Integer> entry: this.map.entrySet()) {
-      stripe = stripe.concat(entry.getKey() + " : " + entry.getValue());
+      stripe = stripe.concat(entry.getKey() + " : " + entry.getValue() + " ");
     }
     return stripe;
   }
 
   @Override
   public void readFields(DataInput in) throws IOException {
-
     Text text;
     IntWritable num;
     for(Map.Entry<String, Integer> entry : this.map.entrySet()) {
@@ -71,7 +75,6 @@ public class StringToIntMapWritable implements Writable {
     // Warning: for efficiency reasons, Hadoop attempts to re-use old instances of
     // StringToIntMapWritable when reading new records. Remember to initialize your variables 
     // inside this function, in order to get rid of old data.
-
   }
 
   @Override

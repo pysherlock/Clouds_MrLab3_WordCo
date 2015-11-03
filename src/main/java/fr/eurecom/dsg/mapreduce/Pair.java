@@ -28,16 +28,30 @@ public class Pair extends Configured implements Tool {
 
       private static IntWritable ONE = new IntWritable(1);
       private static TextPair textPair = new TextPair();
-      private int window = 10;
+      private int window = 2;
+      private String pattern = "[^a-zA-Z0-9]";
 
       @Override
       protected void map(LongWritable key, Text value, Context context)
               throws IOException, InterruptedException {
+          window = context.getConfiguration().getInt("window", 2);
           System.out.println("Map here\n");
           String line = value.toString();
+          line = line.replaceAll(pattern, " ");
           String[] words = line.split("\\s+"); //split string to tokens
           for(int i = 0; i < words.length; i++) {
-              if (words.length == 0)
+              for(int j = 0; j < words.length; j++) {
+                  if(i == j)
+                      continue;
+                  else if (words[j].length() == 0)
+                      continue;
+                  else {
+                      textPair.set(new Text(words[i]), new Text(words[j]));
+                      context.write(textPair, ONE);
+                  }
+              }
+
+  /*            if (words.length == 0)
                   continue;
               for(int j = i - window; j < i + window + 1; j++) {
                   if(i == j || j < 0)
@@ -50,7 +64,7 @@ public class Pair extends Configured implements Tool {
                       textPair.set(new Text(words[i]), new Text(words[j]));
                       context.write(textPair, ONE);
                   }
-              }
+              }*/
           }
       }
   }
@@ -58,8 +72,8 @@ public class Pair extends Configured implements Tool {
   public static class PairReducer
     extends Reducer<TextPair, IntWritable, TextPair, IntWritable> { // TODO: change Object to output value type --should be a matrix?
 
-      private final static IntWritable SumValue = new IntWritable();
-
+      private
+      static IntWritable SumValue = new IntWritable();
       @Override
       public void reduce(TextPair key, Iterable<IntWritable> values, Context context)
               throws IOException, InterruptedException {
